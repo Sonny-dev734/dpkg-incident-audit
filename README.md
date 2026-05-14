@@ -33,44 +33,60 @@ Symptoms included:
 
 ---
 
-## 4. Error Evidence
+4. Error Evidence
 
-```bash
-E: dpkg was interrupted, you must manually run 'sudo dpkg --configure -a'
-E: The package code needs to be reinstalled, but no archive is available
-dpkg: package is in a very bad inconsistent state
+The following system errors were observed during the incident:
+
+dpkg interruption error
+E: dpkg was interrupted, you must manually run 'sudo dpkg --configure -a' to correct the problem.
+Missing recovery archive
+E: The package code needs to be reinstalled, but no archive is available.
+Inconsistent package state
+dpkg: package is in a very bad inconsistent state; you should reinstall it before attempting removal.
 5. Root Cause Analysis
 
-The incident was caused by an interrupted package installation process, resulting in:
+The failure originated from an interrupted dpkg transaction during a package installation or update process.
 
-Incomplete dpkg transaction
-Corrupted package state (iHR)
-Broken dependency resolution chain
-Unavailable recovery archive for automatic repair
-6. Resolution Steps
-Forced removal of corrupted package
+This resulted in:
+
+Incomplete package configuration
+Corrupted dpkg state database entry (iHR state)
+Dependency resolution failure in APT
+Absence of valid reinstall archive for automatic recovery
+6. Resolution Procedure
+
+The system was recovered using standard Debian package management recovery steps.
+
+6.1 Forced removal of corrupted package
 sudo dpkg --remove --force-remove-reinstreq code
-Repair of package system
+6.2 Reconfiguration of dpkg database
 sudo dpkg --configure -a
-Dependency correction
+6.3 Repair of broken dependencies
 sudo apt --fix-broken install
-System validation
+6.4 System update verification
 sudo apt update && sudo apt upgrade
-7. Post-Recovery Status
-dpkg state restored
-APT fully operational
-No broken dependencies remaining
-System update functionality restored
+7. Post-Incident Validation
+
+After remediation, system integrity was verified:
+
+No packages in broken or half-configured state
+dpkg database consistent
+APT upgrade process functional
+No unresolved dependencies
 8. Preventive Measures
-Avoid interrupting package operations
-Use system snapshots before major updates
-Run periodic maintenance commands:
-dpkg --configure -a
-apt autoremove
+
+To reduce recurrence risk:
+
+Avoid interrupting package installation or upgrade processes
 Ensure stable system conditions during updates
+
+Perform periodic maintenance:
+
+sudo dpkg --configure -a
+sudo apt autoremove
+Use system snapshots before major upgrades (e.g., Timeshift)
 9. Conclusion
 
-The system experienced a dpkg-level transactional failure caused by an interrupted installation process. The issue was resolved through forced package recovery and standard APT repair procedures.
+The incident was caused by an interrupted package transaction leading to dpkg state corruption. The issue was resolved through forced package removal and standard APT recovery procedures.
 
-The system is now stable and fully operational.
-
+System functionality was fully restored without data loss or reinstallation.
