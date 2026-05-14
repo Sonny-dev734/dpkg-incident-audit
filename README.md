@@ -1,4 +1,5 @@
-🔐 Infrastructure Incident Report
+# Infrastructure Incident Report — dpkg/apt Package Manager Failure (Ubuntu-based System)
+
 APT/Dpkg Package Management Failure Analysis
 1. Executive Summary
 
