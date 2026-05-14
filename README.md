@@ -127,3 +127,60 @@ APT operations fully functional
 No remaining blocked dependencies detected
 
 
+8. Post-Incident Validation
+
+After remediation, multiple verification steps were performed to ensure system stability and package manager integrity.
+
+8.1 Package System Health Check
+dpkg -l | grep '^iH'
+
+Expected result: No packages in half-configured or inconsistent state.
+
+8.2 Dependency Integrity Check
+sudo apt --fix-broken install
+
+Result: No additional dependencies required correction.
+
+8.3 System Update Verification
+sudo apt update && sudo apt upgrade
+
+Result:
+
+No upgrade errors
+No blocked packages
+Repository synchronization successful
+8.4 Final System Status
+dpkg state: ✔ Consistent
+APT state: ✔ Fully operational
+Package integrity: ✔ Restored
+System stability: ✔ Verified
+9. Preventive Measures
+
+To prevent recurrence of similar incidents, the following best practices are recommended:
+
+9.1 Safe Package Management
+Avoid interrupting apt upgrade or dpkg operations
+Ensure stable power/network during installations
+Close active package managers before shutdown/reboot
+9.2 System Maintenance Practices
+sudo dpkg --configure -a
+sudo apt autoremove
+
+Run periodically to maintain package consistency.
+
+9.3 Infrastructure Stability Improvements
+Use system snapshots (e.g., Timeshift) before major upgrades
+Monitor disk space before installations
+Prefer official repositories over unstable third-party sources when possible
+10. Operational Reflection
+
+This incident highlights the importance of:
+
+understanding dpkg transactional behavior
+structured recovery procedures
+controlled system remediation techniques
+validation after corrective actions
+
+The system was fully restored without data loss or system reinstallation.
+
+
