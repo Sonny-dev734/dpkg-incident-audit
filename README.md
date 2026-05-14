@@ -44,3 +44,31 @@ Impact: Blocked APT operations system-wide
 
 
 
+6. Root Cause Analysis
+
+The incident was caused by a corrupted package transaction within the APT/dpkg system, triggered by an interrupted installation process.
+
+Technical breakdown:
+The package manager (dpkg) maintains a transactional state for all installations and removals.
+During an installation/update of the package code, the process was interrupted.
+This left the package in a half-configured and inconsistent state.
+Package state observed:
+iHR
+i → package marked as installed
+H → half-configured state
+R → requires reinstallation
+Impact on system:
+
+This inconsistency resulted in:
+
+Broken dependency resolution chain in apt
+Blocking of upgrade and repair operations
+Failure of apt --fix-broken install
+dpkg refusing normal recovery due to missing or unavailable archive for repair
+Contributing factors:
+Interrupted package installation process
+Lack of completed dpkg transaction commit
+Dependency on external repository availability for repair
+Absence of valid reinstall candidate for corrupted package state
+
+
